@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Validando Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function validarCPF(cpf) {
+            cpf = cpf.replace(/\D/g, '');
+
+            if (cpf.length !== 11 || !/^\d{11}$/.test(cpf)) {
+                return false;
+            }
+
+            var digitoVerificador1 = 0;
+            var digitoVerificador2 = 0;
+
+            for (var i = 0; i < 9; i++) {
+                digitoVerificador1 += parseInt(cpf.charAt(i)) * (10 - i);
+                digitoVerificador2 += parseInt(cpf.charAt(i)) * (11 - i);
+            }
+
+            digitoVerificador1 = (digitoVerificador1 % 11) < 2 ? 0 : 11 - (digitoVerificador1 % 11);
+            digitoVerificador2 = (digitoVerificador2 % 11) < 2 ? 0 : 11 - (digitoVerificador2 % 11);
+
+            if (parseInt(cpf.charAt(9)) !== digitoVerificador1 || parseInt(cpf.charAt(10)) !== digitoVerificador2) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function validarCEP(cep) {
+            cep = cep.replace(/\D/g, ''); 
+
+            if (cep.length !== 8 || !/^\d{8}$/.test(cep)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function validarFormulario() {
+            var nome = document.getElementById("nome").value;
+            var endereco = document.getElementById("endereco").value;
+            var bairro = document.getElementById("bairro").value;
+            var cep = document.getElementById("cep").value;
+            var cidade = document.getElementById("cidade").value;
+            var estado = document.getElementById("estado").value;
+            var telefoneFixo = document.getElementById("telefoneFixo").value;
+            var celular = document.getElementById("celular").value;
+            var rg = document.getElementById("rg").value;
+            var cpf = document.getElementById("cpf").value;
+
+            if (nome.length < 3 || nome.length > 100) {
+                alert("O campo Nome deve ter entre 3 e 100 caracteres.");
+                return false;
+            }
+
+            if (endereco.length < 5 || endereco.length > 50) {
+                alert("O campo Endereço deve ter entre 5 e 50 caracteres.");
+                return false;
+            }
+
+            if (bairro.length < 3 || bairro.length > 50) {
+                alert("O campo Bairro deve ter entre 3 e 30 caracteres.");
+                return false;
+            }
+
+            if (cep === "") {
+                alert("Por favor, preencha o campo CEP.");
+                return false;
+            }
+
+            if (!validarCEP(cep)) {
+                alert("CEP inválido. Por favor, digite um CEP válido.");
+                return false;
+            }
+
+            if (cidade.length < 3 || cidade.length > 100) {
+                alert("O campo Cidade deve ter entre 3 e 100 caracteres.");
+                return false;
+            }
+
+            if (estado.length !== 2) {
+                alert("O campo Estado deve ter apenas 2 caracteres.");
+                return false;
+            }
+
+            if (telefoneFixo.length < 8 && celular.length < 8) {
+                alert("Preencha pelo menos um campo de telefone (Fixo ou Celular) com no mínimo 8 dígitos.");
+                return false;
+            }
+
+            if (rg.length < 5 || rg.length > 15) {
+                alert("O campo RG deve ter entre 8 e 15 caracteres.");
+                return false;
+            }
+
+            if (cpf.length !== 11) {
+                alert("O CPF deve ter exatamente 11 dígitos.");
+                return false;
+            }
+
+            if (!validarCPF(cpf)) {
+                alert("CPF inválido. Por favor, digite um CPF válido.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastre-se</h1>
+        <form onsubmit="return validarFormulario()">
+            <div>
+                <input type="text" id="nome" name="nome" placeholder="Nome" required>
+                <input type="text" id="endereco" name="endereco" placeholder="Endereço" required> 
+            </div>
+
+            <div>
+                <input type="text" id="bairro" name="bairro" placeholder="Bairro" required>
+                <input type="text" id="cep" name="cep" placeholder="CEP" required>
+            </div>    
+        
+            <div>
+                <input type="text" id="cidade" name="cidade" placeholder="Cidade" required>
+                <input type="text" id="estado" name="estado" placeholder="Estado" required>
+            </div>    
+                
+            <div>
+                <input type="text" id="telefoneFixo" name="telefoneFixo" placeholder="Telefone Fixo">
+                <input type="text" id="celular" name="celular" placeholder="Celular">
+            </div>
+            
+            <div>
+                <input type="text" id="rg" name="rg" placeholder="RG" required>
+                <input type="text" id="cpf" name="cpf" placeholder="CPF" required>
+            </div>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>    
+</body>
+</html>
